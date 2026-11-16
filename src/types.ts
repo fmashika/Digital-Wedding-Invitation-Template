@@ -56,8 +56,17 @@ export interface GiftContribution {
   createdAt: string;
 }
 
+export interface GuestbookWish {
+  id: string;
+  authorName: string;
+  relationship?: string;
+  message: string;
+  createdAt: string;
+}
+
 export interface WeddingDatabase {
   rsvps: RsvpRecord[];
   registryItems: RegistryItem[];
   contributions: GiftContribution[];
+  guestbookWishes: GuestbookWish[];
 }

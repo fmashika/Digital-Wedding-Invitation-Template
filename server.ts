@@ -4,6 +4,7 @@ import path from 'path';
 import { createServer as createViteServer } from 'vite';
 import type {
   GiftContribution,
+  GuestbookWish,
   MealChoice,
   PaymentMethod,
   RegistryItem,
@@ -164,11 +165,39 @@ const SEED_CONTRIBUTIONS: GiftContribution[] = [
   },
 ];
 
+const SEED_GUESTBOOK_WISHES: GuestbookWish[] = [
+  {
+    id: 'wish-1',
+    authorName: 'Mateo & Sofia Alvarez',
+    relationship: 'Family Friends · Phoenix',
+    message:
+      'May your marriage be filled with slow Sunday mornings, warm desert sunsets, and endless laughter together.',
+    createdAt: '2026-10-21T15:10:00.000Z',
+  },
+  {
+    id: 'wish-2',
+    authorName: 'Elena & Carlos Martinez',
+    relationship: 'Bridesmaid & Guest',
+    message:
+      'Seeing the two of you together has always felt effortless and true. Cannot wait to celebrate at Opal Retreat!',
+    createdAt: '2026-10-24T19:45:00.000Z',
+  },
+  {
+    id: 'wish-3',
+    authorName: 'Claire & Daniel Park',
+    relationship: 'University Friends',
+    message:
+      'Cheers to Pinniel & Wema! Wishing you a lifetime of adventure from Tucson to the Amalfi Coast and beyond.',
+    createdAt: '2026-11-02T12:20:00.000Z',
+  },
+];
+
 function createInitialDb(): WeddingDatabase {
   return {
     rsvps: SEED_RSVPS,
     registryItems: SEED_REGISTRY_ITEMS,
     contributions: SEED_CONTRIBUTIONS,
+    guestbookWishes: SEED_GUESTBOOK_WISHES,
   };
 }
 
@@ -183,7 +212,20 @@ function readDb(): WeddingDatabase {
       return initial;
     }
     const raw = fs.readFileSync(DB_FILE, 'utf8');
-    return JSON.parse(raw) as WeddingDatabase;
+    const parsed = JSON.parse(raw) as Partial<WeddingDatabase>;
+    const normalized: WeddingDatabase = {
+      rsvps: Array.isArray(parsed.rsvps) ? parsed.rsvps : SEED_RSVPS,
+      registryItems: Array.isArray(parsed.registryItems)
+        ? parsed.registryItems
+        : SEED_REGISTRY_ITEMS,
+      contributions: Array.isArray(parsed.contributions)
+        ? parsed.contributions
+        : SEED_CONTRIBUTIONS,
+      guestbookWishes: Array.isArray(parsed.guestbookWishes)
+        ? parsed.guestbookWishes
+        : SEED_GUESTBOOK_WISHES,
+    };
+    return normalized;
   } catch {
     return createInitialDb();
   }
@@ -450,6 +492,42 @@ async function startServer() {
     guest.checkedInAt = null;
     writeDb(db);
     res.json({ guest, db });
+  });
+
+  app.post('/api/guestbook', (req, res) => {
+    const body = req.body as {
+      authorName?: string;
+      relationship?: string;
+      message?: string;
+    };
+
+    const authorName = (body.authorName ?? '').trim().slice(0, 80);
+    const relationship = (body.relationship ?? '').trim().slice(0, 80);
+    const message = (body.message ?? '').trim().slice(0, 320);
+
+    if (!authorName) {
+      res.status(400).json({ error: 'Please enter your name to sign the guestbook.' });
+      return;
+    }
+    if (message.length < 3) {
+      res.status(400).json({
+        error: 'Please write a short congratulatory wish (at least 3 characters).',
+      });
+      return;
+    }
+
+    const db = readDb();
+    const wish: GuestbookWish = {
+      id: `wish-${Date.now()}`,
+      authorName,
+      ...(relationship ? { relationship } : {}),
+      message,
+      createdAt: new Date().toISOString(),
+    };
+
+    db.guestbookWishes.unshift(wish);
+    writeDb(db);
+    res.status(201).json({ wish, db });
   });
 
   if (process.env.NODE_ENV !== 'production') {

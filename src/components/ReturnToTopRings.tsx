@@ -104,7 +104,7 @@ export function ReturnToTopRings({
               : { opacity: 0, y: 20, scale: 0.92, filter: 'blur(8px)' }
           }
           transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-          className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40 no-print"
+          className="no-print"
           role="region"
           aria-label="Merge rings to return to top"
         >

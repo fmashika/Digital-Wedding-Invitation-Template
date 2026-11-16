@@ -4,6 +4,7 @@ import { CeremonySection } from './components/CeremonySection';
 import { CheckInSection } from './components/CheckInSection';
 import { CountdownSection } from './components/CountdownSection';
 import { GallerySection } from './components/GallerySection';
+import { GuestbookSection } from './components/GuestbookSection';
 import { InvitationEnvelopeOpening } from './components/InvitationEnvelopeOpening';
 import { RegistrySection } from './components/RegistrySection';
 import { ResilientImage } from './components/ResilientImage';
@@ -13,6 +14,7 @@ import { ScrollReveal } from './components/ScrollReveal';
 import { TimetableSection } from './components/TimetableSection';
 import type {
   GiftContribution,
+  GuestbookWish,
   RegistryItem,
   RsvpRecord,
   WeddingDatabase,
@@ -27,6 +29,7 @@ export default function App() {
   const [rsvps, setRsvps] = useState<RsvpRecord[]>([]);
   const [registryItems, setRegistryItems] = useState<RegistryItem[]>([]);
   const [contributions, setContributions] = useState<GiftContribution[]>([]);
+  const [guestbookWishes, setGuestbookWishes] = useState<GuestbookWish[]>([]);
   const [activePass, setActivePass] = useState<RsvpRecord | null>(null);
   const [scannerPrefillCode, setScannerPrefillCode] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(true);
@@ -44,6 +47,7 @@ export default function App() {
         setRsvps(data.rsvps);
         setRegistryItems(data.registryItems);
         setContributions(data.contributions);
+        setGuestbookWishes(data.guestbookWishes ?? []);
         if (data.rsvps.length > 0) {
           setActivePass(data.rsvps[0]);
         }
@@ -215,6 +219,12 @@ export default function App() {
               Registry
             </a>
             <a
+              href="#guestbook"
+              className="hover:text-[#1A2B3C] hover:underline underline-offset-4 transition-colors whitespace-nowrap shrink-0"
+            >
+              Guestbook
+            </a>
+            <a
               href="#checkin"
               className="hover:text-[#1A2B3C] hover:underline underline-offset-4 transition-colors whitespace-nowrap shrink-0"
             >
@@ -252,6 +262,7 @@ export default function App() {
               { href: '#gallery', label: 'Photo Gallery' },
               { href: '#registry', label: 'Gift Registry & Payment' },
               { href: '#rsvp', label: 'RSVP & Entry Pass' },
+              { href: '#guestbook', label: 'Digital Guestbook' },
               { href: '#checkin', label: 'Ceremony Check-In' },
             ].map((item) => (
               <a
@@ -270,7 +281,7 @@ export default function App() {
 
       <main
         id="top"
-        className={`flex-1 overflow-x-hidden transition-[filter,transform] duration-200 ease-out ${
+        className={`flex-1 overflow-x-clip transition-[filter,transform] duration-200 ease-out ${
           isPullingToTop ? 'blur-[6px] -translate-y-2' : 'blur-none translate-y-0'
         }`}
       >
@@ -373,6 +384,11 @@ export default function App() {
               onJumpToScanner={handleJumpToScanner}
             />
 
+            <GuestbookSection
+              wishes={guestbookWishes}
+              onWishAdded={(_wish, allWishes) => setGuestbookWishes(allWishes)}
+            />
+
             <CheckInSection
               rsvps={rsvps}
               prefilledCode={scannerPrefillCode}
@@ -388,10 +404,18 @@ export default function App() {
             />
           </>
         )}
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 pb-8 flex justify-end sticky bottom-5 z-40 pointer-events-none no-print">
+          <div className="pointer-events-auto">
+            <ReturnToTopRings
+              visible={envelopeOpened && showReturnRings && !isPullingToTop}
+              onPullToTop={handlePullToTop}
+            />
+          </div>
+        </div>
       </main>
 
       <footer className="border-t border-[#DCE4EC] bg-white no-print">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-12 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
           <div>
             <p className="font-display text-2xl text-[#1A2B3C]">
               Pinniel &amp; Wema
@@ -401,35 +425,52 @@ export default function App() {
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-xs font-medium text-[#53667A]">
-            <a href="#ceremony" className="hover:text-[#1A2B3C]">
-              Ceremony
-            </a>
-            <a href="#timetable" className="hover:text-[#1A2B3C]">
-              Timetable
-            </a>
-            <a href="#gallery" className="hover:text-[#1A2B3C]">
-              Gallery
-            </a>
-            <a href="#registry" className="hover:text-[#1A2B3C]">
-              Registry
-            </a>
-            <a href="#rsvp" className="hover:text-[#1A2B3C]">
-              RSVP
-            </a>
-            <a href="#checkin" className="hover:text-[#1A2B3C]">
-              Check-In
-            </a>
-            <button
-              type="button"
-              onClick={() => {
-                window.scrollTo({ top: 0, behavior: 'instant' });
-                setEnvelopeOpened(false);
-              }}
-              className="hover:text-[#1A2B3C] underline underline-offset-4 cursor-pointer"
-            >
-              Replay Envelope
-            </button>
+          <div className="flex flex-col items-start sm:items-end gap-3">
+            <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-xs font-medium text-[#53667A]">
+              <a href="#ceremony" className="hover:text-[#1A2B3C]">
+                Ceremony
+              </a>
+              <a href="#timetable" className="hover:text-[#1A2B3C]">
+                Timetable
+              </a>
+              <a href="#gallery" className="hover:text-[#1A2B3C]">
+                Gallery
+              </a>
+              <a href="#registry" className="hover:text-[#1A2B3C]">
+                Registry
+              </a>
+              <a href="#rsvp" className="hover:text-[#1A2B3C]">
+                RSVP
+              </a>
+              <a href="#guestbook" className="hover:text-[#1A2B3C]">
+                Guestbook
+              </a>
+              <a href="#checkin" className="hover:text-[#1A2B3C]">
+                Check-In
+              </a>
+              <button
+                type="button"
+                onClick={() => {
+                  window.scrollTo({ top: 0, behavior: 'instant' });
+                  setEnvelopeOpened(false);
+                }}
+                className="hover:text-[#1A2B3C] underline underline-offset-4 cursor-pointer"
+              >
+                Replay Envelope
+              </button>
+            </div>
+
+            <p className="text-xs text-[#53667A]">
+              Designed by{' '}
+              <a
+                href="https://profadiztech.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-medium text-[#23374B] hover:text-[#1A2B3C] underline underline-offset-4 transition-colors"
+              >
+                ProFadiz Tech
+              </a>
+            </p>
           </div>
         </div>
       </footer>
@@ -440,11 +481,6 @@ export default function App() {
           className="fixed inset-0 z-30 pointer-events-none bg-white/15 backdrop-blur-[3px]"
         />
       )}
-
-      <ReturnToTopRings
-        visible={envelopeOpened && showReturnRings && !isPullingToTop}
-        onPullToTop={handlePullToTop}
-      />
     </div>
   );
 }
