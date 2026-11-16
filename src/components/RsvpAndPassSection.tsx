@@ -119,10 +119,10 @@ export function RsvpAndPassSection({
 
   return (
     <section id="rsvp" className="bg-white border-y border-[#DCE4EC]">
-      <div className="max-w-6xl mx-auto px-6 py-20">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-14 sm:py-20">
         <ScrollReveal direction="left" distance={40} blur={10} className="max-w-2xl">
           <p className="text-xs font-medium text-[#53667A]">
-            Kindly Respond by October 15, 2026
+            Kindly Respond by November 1, 2027
           </p>
           <h2 className="mt-2 font-display text-3xl sm:text-4xl text-[#1A2B3C] text-balance">
             RSVP &amp; Ceremony Entry Pass
@@ -132,11 +132,11 @@ export function RsvpAndPassSection({
           </p>
         </ScrollReveal>
 
-        <div className="mt-10 grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+        <div className="mt-8 sm:mt-10 grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-10 items-start">
           <ScrollReveal direction="left" delay={0.06} distance={44} blur={10} className="lg:col-span-7">
           <form
             onSubmit={handleSubmit}
-            className="rounded-2xl border border-[#DCE4EC] bg-[#F8FAFC] p-6 sm:p-8 space-y-5"
+            className="rounded-2xl border border-[#DCE4EC] bg-[#F8FAFC] p-5 sm:p-8 space-y-5"
           >
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
@@ -149,7 +149,7 @@ export function RsvpAndPassSection({
                   value={guestName}
                   onChange={(e) => setGuestName(e.target.value)}
                   placeholder="Camila Reyes"
-                  className="w-full px-3.5 py-2.5 rounded-lg border border-[#DCE4EC] bg-white text-sm text-[#1A2B3C] focus:outline-hidden focus:border-[#23374B]"
+                  className="w-full px-3.5 py-2.5 min-h-[44px] rounded-lg border border-[#DCE4EC] bg-white text-base sm:text-sm text-[#1A2B3C] focus:outline-hidden focus:border-[#23374B]"
                 />
               </div>
 
@@ -163,7 +163,7 @@ export function RsvpAndPassSection({
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="camila@example.com"
-                  className="w-full px-3.5 py-2.5 rounded-lg border border-[#DCE4EC] bg-white text-sm text-[#1A2B3C] focus:outline-hidden focus:border-[#23374B]"
+                  className="w-full px-3.5 py-2.5 min-h-[44px] rounded-lg border border-[#DCE4EC] bg-white text-base sm:text-sm text-[#1A2B3C] focus:outline-hidden focus:border-[#23374B]"
                 />
               </div>
             </div>
@@ -314,21 +314,21 @@ export function RsvpAndPassSection({
               <label className="block text-xs font-medium text-[#53667A] mb-2">
                 Already RSVPed? Retrieve Your Ceremony Pass
               </label>
-              <div className="flex gap-2">
+              <div className="flex flex-col sm:flex-row gap-2">
                 <input
                   type="text"
                   value={lookupQuery}
                   onChange={(e) => setLookupQuery(e.target.value)}
                   placeholder="Name, email, or PASS-101"
-                  className="flex-1 min-w-0 px-3.5 py-2 rounded-lg border border-[#DCE4EC] bg-white text-sm text-[#1A2B3C] focus:outline-hidden focus:border-[#23374B]"
+                  className="flex-1 min-w-0 px-3.5 py-2.5 min-h-[44px] rounded-lg border border-[#DCE4EC] bg-white text-base sm:text-sm text-[#1A2B3C] focus:outline-hidden focus:border-[#23374B]"
                 />
                 <button
                   type="submit"
                   disabled={lookingUp}
-                  className="px-4 py-2 rounded-lg border border-[#DCE4EC] bg-white text-xs font-medium text-[#1A2B3C] hover:bg-[#EEF3F7] inline-flex items-center gap-1.5 whitespace-nowrap shrink-0 cursor-pointer"
+                  className="px-4 py-2.5 min-h-[44px] rounded-lg border border-[#DCE4EC] bg-white text-xs font-medium text-[#1A2B3C] hover:bg-[#EEF3F7] inline-flex items-center justify-center gap-1.5 whitespace-nowrap shrink-0 cursor-pointer"
                 >
                   <Search className="w-3.5 h-3.5" />
-                  Find
+                  Find Pass
                 </button>
               </div>
               {lookupError && (

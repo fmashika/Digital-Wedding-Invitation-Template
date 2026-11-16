@@ -115,7 +115,7 @@ export function TimetableSection() {
       id="timetable"
       className="bg-[#F8FAFC] border-t border-[#DCE4EC]"
     >
-      <div className="max-w-6xl mx-auto px-6 py-20">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-14 sm:py-20">
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
           <ScrollReveal direction="left" distance={40} blur={10}>
             <p className="text-xs font-medium text-[#53667A]">
@@ -148,7 +148,7 @@ export function TimetableSection() {
                   role="tab"
                   aria-selected={selectedPhase === phase}
                   onClick={() => setSelectedPhase(phase)}
-                  className={`px-3 py-2 text-xs font-medium rounded-md transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
+                  className={`px-3 py-2 min-h-[38px] text-xs font-medium rounded-md transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
                     selectedPhase === phase
                       ? 'bg-white text-[#1A2B3C] shadow-xs'
                       : 'text-[#53667A] hover:text-[#1A2B3C]'
@@ -162,7 +162,7 @@ export function TimetableSection() {
             <button
               type="button"
               onClick={() => window.print()}
-              className="px-3.5 py-2 rounded-lg border border-[#DCE4EC] bg-white hover:bg-[#EEF3F7] text-xs font-medium text-[#1A2B3C] inline-flex items-center gap-1.5 whitespace-nowrap shrink-0 cursor-pointer no-print"
+              className="px-3.5 py-2 min-h-[40px] rounded-lg border border-[#DCE4EC] bg-white hover:bg-[#EEF3F7] text-xs font-medium text-[#1A2B3C] inline-flex items-center gap-1.5 whitespace-nowrap shrink-0 cursor-pointer no-print"
             >
               <Printer className="w-3.5 h-3.5" />
               Print Timetable
@@ -187,13 +187,13 @@ export function TimetableSection() {
                 distance={30}
                 blur={8}
               >
-                <div className="px-6 py-5 grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-6 items-start hover:bg-[#F8FAFC]/70 transition-colors">
-                  <div className="md:col-span-3">
+                <div className="px-4 sm:px-6 py-5 grid grid-cols-1 md:grid-cols-12 gap-2.5 md:gap-6 items-start hover:bg-[#F8FAFC]/70 transition-colors">
+                  <div className="md:col-span-3 flex flex-wrap md:block items-baseline justify-between gap-2">
                     <div className="flex items-center gap-2 text-sm font-semibold text-[#1A2B3C] tabular-nums">
                       <Clock className="w-3.5 h-3.5 text-[#5B7A96] shrink-0" />
                       <span>{entry.timeRange}</span>
                     </div>
-                    <p className="mt-1 text-xs text-[#53667A] pl-5.5 tabular-nums">
+                    <p className="md:mt-1 text-xs text-[#53667A] md:pl-5 tabular-nums">
                       {entry.duration}
                     </p>
                   </div>
@@ -207,13 +207,18 @@ export function TimetableSection() {
                     </p>
                   </div>
 
-                  <div className="md:col-span-2 text-xs font-medium text-[#53667A]">
+                  <div className="md:col-span-2 text-xs font-medium text-[#53667A] hidden md:block">
                     {entry.phase}
                   </div>
 
-                  <div className="md:col-span-2 flex items-start gap-1.5 text-xs text-[#23374B] font-medium">
+                  <div className="md:col-span-2 flex items-start gap-1.5 text-xs text-[#23374B] font-medium pt-1 md:pt-0">
                     <MapPin className="w-3.5 h-3.5 text-[#5B7A96] mt-0.5 shrink-0" />
-                    <span>{entry.location}</span>
+                    <span>
+                      <span className="md:hidden text-[#53667A] font-normal">
+                        {entry.phase} ·{' '}
+                      </span>
+                      {entry.location}
+                    </span>
                   </div>
                 </div>
               </ScrollReveal>

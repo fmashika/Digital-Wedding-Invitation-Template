@@ -72,7 +72,7 @@ export function ScrollReveal({
     <motion.div
       initial={initial}
       whileInView={target}
-      viewport={{ once: true, amount: 0.12 }}
+      viewport={{ once: true, amount: 0.06 }}
       transition={{
         duration: 0.72,
         delay,

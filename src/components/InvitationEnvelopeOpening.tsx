@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
-import { ResilientImage } from './ResilientImage';
+import { WeddingCardArtwork } from './WeddingCardArtwork';
 
 interface InvitationEnvelopeOpeningProps {
   onOpened: () => void;
@@ -38,7 +38,7 @@ export function InvitationEnvelopeOpening({
         delay: shouldReduceMotion ? 0 : 0.8,
         ease: [0.16, 1, 0.3, 1],
       }}
-      className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#EEF3F8] px-4 py-8 overflow-hidden"
+      className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#EEF3F8] px-4 py-6 sm:py-8 min-h-dvh overflow-y-auto overflow-x-hidden"
       role="dialog"
       aria-modal="true"
       aria-label="Wedding Invitation Envelope"
@@ -49,8 +49,8 @@ export function InvitationEnvelopeOpening({
       />
 
       <div className="relative z-10 w-full max-w-lg flex flex-col items-center">
-        <p className="text-xs font-medium tracking-wide text-[#53667A] mb-6 text-center">
-          Millie Rodriguez &amp; Edgar Arias · November 14, 2026
+        <p className="text-xs font-medium tracking-wide text-[#53667A] mb-4 sm:mb-6 text-center px-2">
+          Pinniel &amp; Wema · December 11, 2027
         </p>
 
         <div
@@ -75,12 +75,7 @@ export function InvitationEnvelopeOpening({
             }}
             className="absolute inset-x-4 top-3 bottom-3 rounded-xl bg-white border border-[#DCE4EC] shadow-md overflow-hidden flex flex-col items-center justify-center"
           >
-            <ResilientImage
-              src="/assets/aistudio/image_bf170588.png"
-              alt="Wedding invitation card for Millie Rodriguez and Edgar Arias"
-              fallbackTitle="Millie Rodriguez & Edgar Arias · 11.14.26"
-              className="w-full h-full object-cover object-top"
-            />
+            <WeddingCardArtwork compact />
           </motion.div>
 
           {/* Left & Right Envelope Side Folds */}
@@ -121,12 +116,12 @@ export function InvitationEnvelopeOpening({
           <motion.div
             animate={{ opacity: isOpening ? 0 : 1 }}
             transition={{ duration: 0.2 }}
-            className="pointer-events-none absolute inset-x-0 bottom-6 text-center px-6"
+            className="pointer-events-none absolute inset-x-0 bottom-3 sm:bottom-6 text-center px-4 sm:px-6"
           >
-            <p className="font-display italic text-lg text-[#32495F]">
+            <p className="font-display italic text-base sm:text-lg text-[#32495F]">
               Together with their families
             </p>
-            <p className="mt-0.5 text-xs text-[#53667A]">
+            <p className="mt-0.5 text-[11px] sm:text-xs text-[#53667A]">
               Opal Retreat · Tucson, Arizona
             </p>
           </motion.div>
@@ -179,7 +174,7 @@ export function InvitationEnvelopeOpening({
             whileTap={isOpening ? undefined : { scale: 0.96 }}
             transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
             aria-label="Click the glowing wax seal to open the wedding invitation"
-            className="group absolute left-1/2 top-[53%] -translate-x-1/2 -translate-y-1/2 z-30 w-24 h-24 rounded-full cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#23374B]"
+            className="group absolute left-1/2 top-[53%] -translate-x-1/2 -translate-y-1/2 z-30 w-20 h-20 sm:w-24 sm:h-24 rounded-full cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#23374B]"
           >
             {/* Outer Luminous Seal Glow */}
             <motion.span
@@ -249,7 +244,7 @@ export function InvitationEnvelopeOpening({
                 fontWeight="500"
                 letterSpacing="1.5"
               >
-                M&amp;E
+                P&amp;W
               </text>
               <text
                 x="60"
@@ -260,7 +255,7 @@ export function InvitationEnvelopeOpening({
                 fontSize="8"
                 letterSpacing="1.4"
               >
-                11.14.26
+                12.11.27
               </text>
             </svg>
           </motion.button>

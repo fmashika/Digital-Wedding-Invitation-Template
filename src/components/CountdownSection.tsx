@@ -77,9 +77,9 @@ export function CountdownSection() {
       aria-label="Ceremony Countdown"
       className="border-b border-[#DCE4EC] bg-white"
     >
-      <div className="max-w-6xl mx-auto px-6 py-7">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-7">
         <ScrollReveal direction="left" distance={32} blur={8}>
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 md:gap-4">
             <div className="space-y-1">
               <p className="text-xs font-medium tracking-wide text-[#53667A]">
                 Countdown to December 2027 · Saturday, December 11, 2027 at 2:00 PM MST
@@ -94,7 +94,7 @@ export function CountdownSection() {
           </div>
         </ScrollReveal>
 
-        <div className="mt-5 grid grid-cols-2 sm:grid-cols-5 gap-3.5">
+        <div className="mt-5 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 sm:gap-3.5">
           {units.map((unit, index) => (
             <ScrollReveal
               key={unit.label}
@@ -102,8 +102,9 @@ export function CountdownSection() {
               delay={0.05 * index}
               distance={26}
               blur={8}
+              className={index === 0 ? 'col-span-2 sm:col-span-1' : ''}
             >
-              <div className="rounded-xl border border-[#DCE4EC] bg-[#F8FAFC] px-4 py-3.5 flex items-baseline justify-between">
+              <div className="rounded-xl border border-[#DCE4EC] bg-[#F8FAFC] px-4 py-3 sm:py-3.5 flex items-baseline justify-between">
                 <span className="font-display text-3xl sm:text-4xl text-[#1A2B3C] tabular-nums tracking-tight">
                   {unit.value}
                 </span>

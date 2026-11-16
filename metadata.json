@@ -1,6 +1,6 @@
 {
   "name": "Digital Wedding Invitation Template",
-  "description": "Wedding invitation, ceremony schedule, photo gallery, integrated gift registry with payment, RSVP, and QR guest check-in for Millie Rodriguez & Edgar Arias at Opal Retreat, Tucson.",
+  "description": "Wedding invitation, ceremony schedule, photo gallery, integrated gift registry with payment, RSVP, and QR guest check-in for Pinniel & Wema at Opal Retreat, Tucson.",
   "requestFramePermissions": ["camera"],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

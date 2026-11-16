@@ -223,7 +223,7 @@ export function CheckInSection({
   };
 
   return (
-    <section id="checkin" className="max-w-6xl mx-auto px-6 py-20">
+    <section id="checkin" className="max-w-6xl mx-auto px-4 sm:px-6 py-14 sm:py-20">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
         <ScrollReveal direction="left" distance={40} blur={10}>
           <p className="text-xs font-medium text-[#53667A]">
@@ -245,8 +245,8 @@ export function CheckInSection({
         </ScrollReveal>
       </div>
 
-      <div className="mt-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        <ScrollReveal direction="left" delay={0.06} distance={44} blur={10} className="lg:col-span-6 rounded-2xl border border-[#DCE4EC] bg-white p-6 space-y-6">
+      <div className="mt-8 sm:mt-10 grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-start">
+        <ScrollReveal direction="left" delay={0.06} distance={44} blur={10} className="lg:col-span-6 rounded-2xl border border-[#DCE4EC] bg-white p-5 sm:p-6 space-y-6">
           <div className="rounded-xl border border-[#DCE4EC] bg-[#0F1B26] overflow-hidden relative min-h-[260px] flex flex-col items-center justify-center text-white p-6">
             <canvas ref={canvasRef} className="hidden" />
             {scanningCamera ? (
@@ -320,18 +320,18 @@ export function CheckInSection({
             <label className="block text-xs font-medium text-[#53667A]">
               Enter or Scan Pass Code Manually
             </label>
-            <div className="flex gap-2">
+            <div className="flex flex-col sm:flex-row gap-2">
               <input
                 type="text"
                 value={manualCode}
                 onChange={(e) => setManualCode(e.target.value)}
-                placeholder="e.g., PASS-101 or MR-EA-4821"
-                className="flex-1 min-w-0 px-3.5 py-2.5 rounded-lg border border-[#DCE4EC] bg-[#F8FAFC] text-sm font-mono text-[#1A2B3C] focus:outline-hidden focus:border-[#23374B]"
+                placeholder="e.g., PASS-101 or PW-4821"
+                className="flex-1 min-w-0 px-3.5 py-2.5 min-h-[44px] rounded-lg border border-[#DCE4EC] bg-[#F8FAFC] text-base sm:text-sm font-mono text-[#1A2B3C] focus:outline-hidden focus:border-[#23374B]"
               />
               <button
                 type="submit"
                 disabled={verifying}
-                className="px-5 py-2.5 rounded-lg bg-[#23374B] text-white text-sm font-medium hover:bg-[#1A2B3C] transition-colors whitespace-nowrap shrink-0 disabled:opacity-60 cursor-pointer"
+                className="px-5 py-2.5 min-h-[44px] rounded-lg bg-[#23374B] text-white text-sm font-medium hover:bg-[#1A2B3C] transition-colors whitespace-nowrap shrink-0 disabled:opacity-60 cursor-pointer"
               >
                 {verifying ? 'Checking...' : 'Verify Entry'}
               </button>
@@ -447,9 +447,10 @@ export function CheckInSection({
                             type="button"
                             onClick={() => handleResetPass(guest.passCode)}
                             title="Reset check-in status"
-                            className="p-2 rounded-lg border border-[#DCE4EC] text-[#53667A] hover:text-[#1A2B3C] hover:bg-[#F8FAFC] cursor-pointer"
+                            aria-label={`Reset check-in for ${guest.guestName}`}
+                            className="w-10 h-10 inline-flex items-center justify-center rounded-lg border border-[#DCE4EC] text-[#53667A] hover:text-[#1A2B3C] hover:bg-[#F8FAFC] cursor-pointer"
                           >
-                            <RotateCcw className="w-3.5 h-3.5" />
+                            <RotateCcw className="w-4 h-4" />
                           </button>
                         </>
                       ) : (
@@ -459,7 +460,7 @@ export function CheckInSection({
                             setManualCode(guest.passCode);
                             void verifyPassCode(guest.passCode);
                           }}
-                          className="px-3.5 py-2 rounded-lg border border-[#DCE4EC] bg-[#F8FAFC] hover:bg-[#23374B] hover:text-white hover:border-[#23374B] text-xs font-medium text-[#1A2B3C] transition-colors whitespace-nowrap cursor-pointer"
+                          className="px-4 py-2 min-h-[40px] rounded-lg border border-[#DCE4EC] bg-[#F8FAFC] hover:bg-[#23374B] hover:text-white hover:border-[#23374B] text-xs font-medium text-[#1A2B3C] transition-colors whitespace-nowrap cursor-pointer"
                         >
                           Scan Pass
                         </button>

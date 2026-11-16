@@ -101,7 +101,7 @@ export function GallerySection() {
 
   return (
     <section id="gallery" className="bg-white border-y border-[#DCE4EC]">
-      <div className="max-w-6xl mx-auto px-6 py-20">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-14 sm:py-20">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <ScrollReveal direction="left" distance={40} blur={10}>
             <p className="text-xs font-medium text-[#53667A]">
@@ -111,7 +111,7 @@ export function GallerySection() {
               Photo Gallery
             </h2>
             <p className="mt-2 text-[15px] text-[#425569] max-w-xl">
-              Quiet moments from our engagement in Tucson and glimpses of Opal Retreat before we welcome you in November.
+              Quiet moments from our engagement in Tucson and glimpses of Opal Retreat before we welcome you in December.
             </p>
           </ScrollReveal>
 
@@ -154,8 +154,8 @@ export function GallerySection() {
               blur={10}
               className={
                 activeCategory === 'All'
-                  ? photo.gridClass
-                  : 'md:col-span-6 min-h-[280px]'
+                  ? `h-[250px] sm:h-[300px] md:h-auto ${photo.gridClass}`
+                  : 'h-[250px] sm:h-[280px] md:col-span-6 md:min-h-[280px]'
               }
             >
               <button
@@ -206,18 +206,18 @@ export function GallerySection() {
                 type="button"
                 onClick={() => setSelectedIndex(null)}
                 aria-label="Close photo viewer"
-                className="p-2 rounded-lg text-white/80 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+                className="w-11 h-11 inline-flex items-center justify-center rounded-lg text-white/80 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <div className="relative bg-[#0B141D] flex items-center justify-center max-h-[70vh]">
+            <div className="relative bg-[#0B141D] flex items-center justify-center max-h-[68dvh]">
               <ResilientImage
                 src={activePhoto.src}
                 alt={activePhoto.title}
                 fallbackTitle={activePhoto.title}
-                className="max-h-[70vh] w-auto object-contain"
+                className="max-h-[68dvh] w-auto object-contain"
               />
               {visiblePhotos.length > 1 && (
                 <>
@@ -230,7 +230,7 @@ export function GallerySection() {
                           visiblePhotos.length
                       )
                     }
-                    className="absolute left-3 top-1/2 -translate-y-1/2 p-2.5 rounded-full bg-[#0E1924]/75 text-white hover:bg-[#0E1924] border border-white/15 cursor-pointer"
+                    className="absolute left-3 top-1/2 -translate-y-1/2 w-11 h-11 inline-flex items-center justify-center rounded-full bg-[#0E1924]/75 text-white hover:bg-[#0E1924] border border-white/15 cursor-pointer"
                   >
                     <ChevronLeft className="w-5 h-5" />
                   </button>
@@ -240,7 +240,7 @@ export function GallerySection() {
                     onClick={() =>
                       setSelectedIndex((selectedIndex + 1) % visiblePhotos.length)
                     }
-                    className="absolute right-3 top-1/2 -translate-y-1/2 p-2.5 rounded-full bg-[#0E1924]/75 text-white hover:bg-[#0E1924] border border-white/15 cursor-pointer"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 w-11 h-11 inline-flex items-center justify-center rounded-full bg-[#0E1924]/75 text-white hover:bg-[#0E1924] border border-white/15 cursor-pointer"
                   >
                     <ChevronRight className="w-5 h-5" />
                   </button>

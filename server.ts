@@ -104,18 +104,18 @@ const SEED_RSVPS: RsvpRecord[] = [
   {
     id: 'rsvp-102',
     passCode: 'PASS-102',
-    guestName: 'Mateo & Sofia Rodriguez',
-    email: 'mateo.rodriguez@example.com',
+    guestName: 'Mateo & Sofia Alvarez',
+    email: 'mateo.alvarez@example.com',
     attending: true,
     partySize: 2,
-    additionalGuests: 'Sofia Rodriguez',
+    additionalGuests: 'Sofia Alvarez',
     mealChoice: 'Braised Beef Short Rib',
     dietaryNotes: 'None',
     songRequest: 'La Vie En Rose',
     tableAssignment: 'Table 1 · Family Terrace',
     checkInStatus: 'checked_in',
-    checkedInAt: '2026-11-14T20:42:00.000Z',
-    createdAt: '2026-10-08T14:15:00.000Z',
+    checkedInAt: '2027-12-11T20:42:00.000Z',
+    createdAt: '2027-10-08T14:15:00.000Z',
   },
   {
     id: 'rsvp-103',
@@ -141,8 +141,8 @@ const SEED_CONTRIBUTIONS: GiftContribution[] = [
     referenceCode: 'PAY-8412',
     itemId: 'honeymoon-amalfi',
     itemTitle: 'Amalfi Coast Honeymoon Suite',
-    contributorName: 'Mateo & Sofia Rodriguez',
-    contributorEmail: 'mateo.rodriguez@example.com',
+    contributorName: 'Mateo & Sofia Alvarez',
+    contributorEmail: 'mateo.alvarez@example.com',
     amount: 500,
     paymentMethod: 'Card',
     accountSummary: 'Visa •••• 4242',
@@ -199,12 +199,12 @@ function writeDb(db: WeddingDatabase): void {
 function generatePassCode(existingCodes: Set<string>): string {
   for (let i = 0; i < 20; i++) {
     const num = Math.floor(1000 + Math.random() * 9000);
-    const code = `MR-EA-${num}`;
+    const code = `PW-${num}`;
     if (!existingCodes.has(code)) {
       return code;
     }
   }
-  return `MR-EA-${Date.now().toString().slice(-4)}`;
+  return `PW-${Date.now().toString().slice(-4)}`;
 }
 
 function assignTable(index: number, attending: boolean): string {

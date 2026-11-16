@@ -1,6 +1,6 @@
 import { Calendar, Clock, MapPin, Shirt } from 'lucide-react';
-import { ResilientImage } from './ResilientImage';
 import { ScrollReveal } from './ScrollReveal';
+import { WeddingCardArtwork } from './WeddingCardArtwork';
 
 const TIMELINE_EVENTS = [
   {
@@ -17,7 +17,7 @@ const TIMELINE_EVENTS = [
     time: '2:00 PM',
     location: 'Opal Archway Garden',
     description:
-      'Millie and Edgar exchange vows surrounded by family, desert olive trees, and mountain views.',
+      'Pinniel and Wema exchange vows surrounded by family, desert olive trees, and mountain views.',
   },
   {
     index: '03',
@@ -42,13 +42,13 @@ export function CeremonySection() {
     const icsContent = [
       'BEGIN:VCALENDAR',
       'VERSION:2.0',
-      'PRODID:-//Millie and Edgar Wedding//EN',
+      'PRODID:-//Pinniel and Wema Wedding//EN',
       'BEGIN:VEVENT',
-      'UID:millie-edgar-2026-11-14@opalretreat.com',
-      'DTSTAMP:20261114T210000Z',
-      'DTSTART:20261114T210000Z',
-      'DTEND:20261115T053000Z',
-      'SUMMARY:Wedding of Millie Rodriguez & Edgar Arias',
+      'UID:pinniel-wema-2027-12-11@opalretreat.com',
+      'DTSTAMP:20271211T210000Z',
+      'DTSTART:20271211T210000Z',
+      'DTEND:20271212T053000Z',
+      'SUMMARY:Wedding of Pinniel & Wema',
       'LOCATION:Opal Retreat, 4800 N Sabino Canyon Rd, Tucson, AZ',
       'DESCRIPTION:Ceremony begins at 2:00 PM MST with reception to follow at Opal Retreat.',
       'END:VEVENT',
@@ -59,7 +59,7 @@ export function CeremonySection() {
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = 'millie-edgar-wedding-11-14-26.ics';
+    link.download = 'pinniel-wema-wedding-12-11-27.ics';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -67,8 +67,8 @@ export function CeremonySection() {
   };
 
   return (
-    <section id="ceremony" className="max-w-6xl mx-auto px-6 py-20">
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+    <section id="ceremony" className="max-w-6xl mx-auto px-4 sm:px-6 py-14 sm:py-20">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
         <ScrollReveal direction="left" distance={44} blur={10} className="lg:col-span-5">
           <p className="text-xs font-medium text-[#53667A]">
             Official Invitation · Keepsake Edition
@@ -81,15 +81,10 @@ export function CeremonySection() {
           </p>
 
           <div className="mt-8 rounded-2xl border border-[#DCE4EC] bg-white p-4 shadow-xs">
-            <ResilientImage
-              src="/assets/aistudio/image_bf170588.png"
-              alt="Official wedding invitation for Millie Rodriguez and Edgar Arias on November 14, 2026 at Opal Retreat, Tucson, Arizona"
-              className="w-full h-auto rounded-xl object-contain"
-              fallbackTitle="Millie Rodriguez & Edgar Arias · 11.14.26"
-            />
+            <WeddingCardArtwork />
             <div className="mt-4 pt-3 border-t border-[#EDF2F7] flex items-center justify-between gap-4">
               <span className="text-xs text-[#53667A]">
-                11.14.26 · 2:00 PM · Opal Retreat
+                12.11.27 · 2:00 PM · Opal Retreat
               </span>
               <button
                 type="button"
@@ -111,7 +106,7 @@ export function CeremonySection() {
                 <span>Date &amp; Time</span>
               </div>
               <p className="mt-2 text-sm font-semibold text-[#1A2B3C]">
-                Saturday, Nov 14, 2026
+                Saturday, Dec 11, 2027
               </p>
               <p className="text-sm text-[#425569]">
                 Doors 1:30 PM · Vows 2:00 PM

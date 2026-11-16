@@ -122,7 +122,7 @@ export function RegistrySection({
     } else if (paymentMethod === 'Apple Pay') {
       accountSummary = 'Apple Pay Express';
     } else if (paymentMethod === 'Zelle') {
-      accountSummary = 'Zelle @millie-edgar-2026';
+      accountSummary = 'Zelle @pinniel-wema-2027';
     } else if (paymentMethod === 'Bank Transfer') {
       accountSummary = bankAccountName.trim()
         ? `ACH (${bankAccountName.trim()})`
@@ -166,7 +166,7 @@ export function RegistrySection({
   const isModalOpen = Boolean(activeItem || customFundOpen);
 
   return (
-    <section id="registry" className="max-w-6xl mx-auto px-6 py-20">
+    <section id="registry" className="max-w-6xl mx-auto px-4 sm:px-6 py-14 sm:py-20">
       <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
         <ScrollReveal direction="left" distance={40} blur={10}>
           <p className="text-xs font-medium text-[#53667A]">
@@ -184,7 +184,7 @@ export function RegistrySection({
           <button
             type="button"
             onClick={() => openCheckout(null, true)}
-            className="inline-flex items-center gap-2 px-5 py-3 rounded-lg bg-[#23374B] text-white text-sm font-medium hover:bg-[#1A2B3C] transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+            className="inline-flex items-center gap-2 px-5 py-3 min-h-[44px] rounded-lg bg-[#23374B] text-white text-sm font-medium hover:bg-[#1A2B3C] transition-colors whitespace-nowrap shrink-0 cursor-pointer"
           >
             <Gift className="w-4 h-4" />
             Send Cash Gift
@@ -331,7 +331,7 @@ export function RegistrySection({
                 Recent Gift Contributions &amp; Payment Ledger
               </h3>
               <p className="text-xs text-[#53667A]">
-                Verified receipts recorded for Millie &amp; Edgar
+                Verified receipts recorded for Pinniel &amp; Wema
               </p>
             </div>
             <span className="text-xs font-mono text-[#53667A] tabular-nums">
@@ -380,19 +380,19 @@ export function RegistrySection({
           role="dialog"
           aria-modal="true"
           aria-label="Gift Payment Checkout"
-          className="fixed inset-0 z-50 bg-[#0E1924]/70 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto"
+          className="fixed inset-0 z-50 bg-[#0E1924]/70 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4"
           onClick={closeCheckout}
         >
           <div
-            className="w-full max-w-xl bg-white rounded-2xl border border-[#DCE4EC] shadow-2xl overflow-hidden my-8"
+            className="w-full max-w-xl max-h-[92dvh] overflow-y-auto bg-white rounded-t-2xl sm:rounded-2xl border border-[#DCE4EC] shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center justify-between px-6 py-4 border-b border-[#DCE4EC] bg-[#F8FAFC]">
-              <div>
+            <div className="sticky top-0 z-10 flex items-center justify-between px-5 sm:px-6 py-4 border-b border-[#DCE4EC] bg-[#F8FAFC]">
+              <div className="min-w-0 pr-3">
                 <p className="text-xs text-[#53667A]">
-                  Millie &amp; Edgar Registry Payment
+                  Pinniel &amp; Wema Registry Payment
                 </p>
-                <h3 className="font-display text-2xl text-[#1A2B3C]">
+                <h3 className="font-display text-xl sm:text-2xl text-[#1A2B3C] truncate">
                   {activeItem ? activeItem.title : 'Honeymoon & Home Cash Gift'}
                 </h3>
               </div>
@@ -400,7 +400,7 @@ export function RegistrySection({
                 type="button"
                 onClick={closeCheckout}
                 aria-label="Close payment window"
-                className="p-2 rounded-lg text-[#53667A] hover:text-[#1A2B3C] hover:bg-[#E8EFF6] cursor-pointer"
+                className="w-11 h-11 inline-flex items-center justify-center rounded-lg text-[#53667A] hover:text-[#1A2B3C] hover:bg-[#E8EFF6] shrink-0 cursor-pointer"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -557,7 +557,7 @@ export function RegistrySection({
                   <div className="p-4 rounded-xl border border-[#DCE4EC] bg-[#F8FAFC] flex items-center gap-3">
                     <Smartphone className="w-5 h-5 text-[#23374B] shrink-0" />
                     <p className="text-xs text-[#425569]">
-                      Express settlement enabled for Millie &amp; Edgar’s registry fund. Click Pay below to authorize your ${amount} gift.
+                      Express settlement enabled for Pinniel &amp; Wema’s registry fund. Click Pay below to authorize your ${amount} gift.
                     </p>
                   </div>
                 )}
@@ -565,7 +565,7 @@ export function RegistrySection({
                 {paymentMethod === 'Zelle' && (
                   <div className="p-4 rounded-xl border border-[#DCE4EC] bg-[#F8FAFC] space-y-1.5">
                     <p className="text-xs font-semibold text-[#1A2B3C]">
-                      Zelle Direct Recipient: @millie-edgar-2026 (millie.edgar@opalretreat.com)
+                      Zelle Direct Recipient: @pinniel-wema-2027 (pinniel.wema@opalretreat.com)
                     </p>
                     <p className="text-xs text-[#425569]">
                       Zero platform fee. Submitting records your gift message and generates an instant reference code.
@@ -620,7 +620,7 @@ export function RegistrySection({
 
                 <div>
                   <label className="block text-xs font-medium text-[#53667A] mb-1">
-                    Personal Note for Millie &amp; Edgar (Optional)
+                    Personal Note for Pinniel &amp; Wema (Optional)
                   </label>
                   <textarea
                     rows={2}
