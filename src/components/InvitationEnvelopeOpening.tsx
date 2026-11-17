@@ -116,13 +116,13 @@ export function InvitationEnvelopeOpening({
           <motion.div
             animate={{ opacity: isOpening ? 0 : 1 }}
             transition={{ duration: 0.2 }}
-            className="pointer-events-none absolute inset-x-0 bottom-3 sm:bottom-6 text-center px-4 sm:px-6"
+            className="pointer-events-none absolute inset-x-0 bottom-2.5 sm:bottom-5 text-center px-3 sm:px-6"
           >
-            <p className="font-display italic text-base sm:text-lg text-[#32495F]">
-              Together with their families
+            <p className="font-display italic text-[11px] sm:text-[13px] leading-snug text-[#32495F]">
+              Mr &amp; Mrs Mashika kindly welcome you to their Son&rsquo;s wedding
             </p>
-            <p className="mt-0.5 text-[11px] sm:text-xs text-[#53667A]">
-              Opal Retreat · Tucson, Arizona
+            <p className="mt-1 text-[11px] sm:text-xs font-medium text-[#53667A]">
+              Touch the sealing to open your invitation
             </p>
           </motion.div>
 
