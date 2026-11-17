@@ -118,7 +118,7 @@ export function InvitationEnvelopeOpening({
             transition={{ duration: 0.2 }}
             className="pointer-events-none absolute inset-x-0 bottom-2.5 sm:bottom-5 text-center px-3 sm:px-6"
           >
-            <p className="font-display italic text-[11px] sm:text-[13px] leading-snug text-[#32495F]">
+            <p className="font-display italic font-bold text-[11px] sm:text-[13px] leading-snug text-[#32495F]">
               Mr &amp; Mrs Mashika kindly welcome you to their Son&rsquo;s wedding
             </p>
             <p className="mt-1 text-[11px] sm:text-xs font-medium text-[#53667A]">
