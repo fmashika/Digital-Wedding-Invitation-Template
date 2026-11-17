@@ -1,9 +1,40 @@
 import { useEffect, useState } from 'react';
-import { ChevronLeft, ChevronRight, X } from 'lucide-react';
+import { ChevronLeft, ChevronRight, SlidersHorizontal, X } from 'lucide-react';
 import { ResilientImage } from './ResilientImage';
 import { ScrollReveal } from './ScrollReveal';
 
 type GalleryCategory = 'All' | 'Engagement' | 'Opal Retreat' | 'Details';
+type GalleryFilterId = 'original' | 'grayscale' | 'sepia' | 'vintage' | 'slate';
+
+interface GalleryFilterPreset {
+  id: GalleryFilterId;
+  label: string;
+  cssClass: string;
+}
+
+const GALLERY_FILTERS: GalleryFilterPreset[] = [
+  { id: 'original', label: 'Original', cssClass: '' },
+  {
+    id: 'grayscale',
+    label: 'Grayscale',
+    cssClass: 'grayscale contrast-[1.08]',
+  },
+  {
+    id: 'sepia',
+    label: 'Sepia',
+    cssClass: 'sepia-[0.72] contrast-[1.04] brightness-[0.98]',
+  },
+  {
+    id: 'vintage',
+    label: 'Vintage',
+    cssClass: 'sepia-[0.3] contrast-[0.92] brightness-[1.05] saturate-[0.82]',
+  },
+  {
+    id: 'slate',
+    label: 'Cool Slate',
+    cssClass: 'saturate-[0.72] contrast-[1.06] brightness-[0.98] -hue-rotate-6',
+  },
+];
 
 interface GalleryPhoto {
   id: string;
@@ -69,12 +100,17 @@ const CATEGORIES: GalleryCategory[] = ['All', 'Engagement', 'Opal Retreat', 'Det
 
 export function GallerySection() {
   const [activeCategory, setActiveCategory] = useState<GalleryCategory>('All');
+  const [activeFilter, setActiveFilter] = useState<GalleryFilterId>('original');
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
   const visiblePhotos =
     activeCategory === 'All'
       ? GALLERY_PHOTOS
       : GALLERY_PHOTOS.filter((photo) => photo.category === activeCategory);
+
+  const activeFilterPreset =
+    GALLERY_FILTERS.find((preset) => preset.id === activeFilter) ??
+    GALLERY_FILTERS[0];
 
   useEffect(() => {
     if (selectedIndex === null) return;
@@ -119,7 +155,7 @@ export function GallerySection() {
             <div
               role="tablist"
               aria-label="Filter gallery photos"
-              className="inline-flex items-center gap-1 p-1 bg-[#EEF3F7] rounded-lg self-start"
+              className="inline-flex flex-wrap items-center gap-1 p-1 bg-[#EEF3F7] rounded-lg self-start"
             >
               {CATEGORIES.map((category) => (
                 <button
@@ -144,7 +180,42 @@ export function GallerySection() {
           </ScrollReveal>
         </div>
 
-        <div className="mt-10 grid grid-cols-1 md:grid-cols-12 gap-5">
+        <ScrollReveal direction="up" delay={0.06} distance={24} blur={6}>
+          <div className="mt-6 pt-5 border-t border-[#EDF2F7] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="inline-flex items-center gap-2 text-xs font-medium text-[#53667A]">
+              <SlidersHorizontal className="w-3.5 h-3.5 text-[#5B7A96]" />
+              <span>Gallery Tone</span>
+            </div>
+
+            <div
+              role="radiogroup"
+              aria-label="Customize gallery image filter"
+              className="inline-flex flex-wrap items-center gap-1 p-1 bg-[#F4F7FA] border border-[#DCE4EC] rounded-lg self-start sm:self-auto"
+            >
+              {GALLERY_FILTERS.map((preset) => {
+                const isActive = activeFilter === preset.id;
+                return (
+                  <button
+                    key={preset.id}
+                    type="button"
+                    role="radio"
+                    aria-checked={isActive}
+                    onClick={() => setActiveFilter(preset.id)}
+                    className={`min-h-[34px] px-3 py-1.5 text-xs font-medium rounded-md transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
+                      isActive
+                        ? 'bg-[#23374B] text-white shadow-xs'
+                        : 'text-[#53667A] hover:text-[#1A2B3C] hover:bg-white/70'
+                    }`}
+                  >
+                    {preset.label}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </ScrollReveal>
+
+        <div className="mt-7 grid grid-cols-1 md:grid-cols-12 gap-5">
           {visiblePhotos.map((photo, index) => (
             <ScrollReveal
               key={`${activeCategory}-${photo.id}`}
@@ -167,9 +238,9 @@ export function GallerySection() {
                   src={photo.src}
                   alt={photo.title}
                   fallbackTitle={photo.title}
-                  className={`w-full h-full transition-transform duration-500 ease-out group-hover:scale-[1.03] ${
+                  className={`w-full h-full transition-[transform,filter] duration-500 ease-out group-hover:scale-[1.03] ${
                     photo.imgClass ?? 'object-cover'
-                  }`}
+                  } ${activeFilterPreset.cssClass}`}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0E1924]/80 via-[#0E1924]/20 to-transparent opacity-90 transition-opacity" />
                 <div className="absolute bottom-0 left-0 right-0 p-5 text-white">
@@ -212,12 +283,12 @@ export function GallerySection() {
               </button>
             </div>
 
-            <div className="relative bg-[#0B141D] flex items-center justify-center max-h-[68dvh]">
+            <div className="relative bg-[#0B141D] flex items-center justify-center max-h-[64dvh]">
               <ResilientImage
                 src={activePhoto.src}
                 alt={activePhoto.title}
                 fallbackTitle={activePhoto.title}
-                className="max-h-[68dvh] w-auto object-contain"
+                className={`max-h-[64dvh] w-auto object-contain transition-[filter] duration-300 ease-out ${activeFilterPreset.cssClass}`}
               />
               {visiblePhotos.length > 1 && (
                 <>
@@ -248,9 +319,37 @@ export function GallerySection() {
               )}
             </div>
 
-            <div className="px-6 py-4 text-white">
-              <h3 className="font-display text-2xl">{activePhoto.title}</h3>
-              <p className="mt-1 text-sm text-white/80">{activePhoto.caption}</p>
+            <div className="px-5 sm:px-6 py-4 text-white flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div>
+                <h3 className="font-display text-2xl">{activePhoto.title}</h3>
+                <p className="mt-1 text-sm text-white/80">{activePhoto.caption}</p>
+              </div>
+
+              <div
+                role="radiogroup"
+                aria-label="Viewer image filter"
+                className="inline-flex flex-wrap items-center gap-1 p-1 rounded-lg bg-white/8 border border-white/12 self-start md:self-auto shrink-0"
+              >
+                {GALLERY_FILTERS.map((preset) => {
+                  const isActive = activeFilter === preset.id;
+                  return (
+                    <button
+                      key={preset.id}
+                      type="button"
+                      role="radio"
+                      aria-checked={isActive}
+                      onClick={() => setActiveFilter(preset.id)}
+                      className={`px-2.5 py-1.5 text-xs font-medium rounded-md transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
+                        isActive
+                          ? 'bg-white text-[#13212E]'
+                          : 'text-white/75 hover:text-white hover:bg-white/10'
+                      }`}
+                    >
+                      {preset.label}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
           </div>
         </div>
