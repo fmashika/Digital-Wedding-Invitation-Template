@@ -6,6 +6,8 @@ interface ResilientImageProps {
   alt: string;
   className?: string;
   fallbackTitle?: string;
+  loading?: 'eager' | 'lazy';
+  fetchPriority?: 'high' | 'low' | 'auto';
 }
 
 export function ResilientImage({
@@ -13,6 +15,8 @@ export function ResilientImage({
   alt,
   className = '',
   fallbackTitle,
+  loading = 'lazy',
+  fetchPriority = 'auto',
 }: ResilientImageProps) {
   const [hasError, setHasError] = useState(false);
 
@@ -35,6 +39,9 @@ export function ResilientImage({
     <img
       src={src}
       alt={alt}
+      loading={loading}
+      decoding="async"
+      fetchPriority={fetchPriority}
       referrerPolicy="no-referrer"
       onError={() => setHasError(true)}
       className={className}

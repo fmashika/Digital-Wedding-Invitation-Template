@@ -182,14 +182,14 @@ export function InvitationEnvelopeOpening({
               animate={
                 shouldReduceMotion || isOpening
                   ? { opacity: 0.65, scale: 1 }
-                  : { opacity: [0.45, 0.95, 0.45], scale: [0.96, 1.16, 0.96] }
+                  : { opacity: [0.5, 0.95, 0.5], scale: [0.97, 1.14, 0.97] }
               }
               transition={
                 shouldReduceMotion || isOpening
                   ? { duration: 0.2 }
                   : { duration: 2.4, repeat: Infinity, ease: 'easeInOut' }
               }
-              className="pointer-events-none absolute -inset-4 rounded-full bg-[radial-gradient(circle,rgba(125,168,209,0.72)_0%,rgba(59,87,115,0.38)_45%,transparent_72%)] blur-md"
+              className="pointer-events-none absolute -inset-6 rounded-full bg-[radial-gradient(circle,rgba(125,168,209,0.68)_0%,rgba(59,87,115,0.3)_40%,rgba(59,87,115,0.08)_60%,transparent_75%)] will-change-transform"
             />
             <span
               aria-hidden="true"

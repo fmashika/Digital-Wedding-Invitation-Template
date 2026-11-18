@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { ScrollReveal } from './ScrollReveal';
 
 const CEREMONY_TARGET = new Date('2027-12-11T14:00:00-07:00');
@@ -49,13 +49,16 @@ function padTwo(val: number): string {
   return String(val).padStart(2, '0');
 }
 
-export function CountdownSection() {
+function LiveCountdownGrid() {
   const [nowMs, setNowMs] = useState<number>(() => Date.now());
 
   useEffect(() => {
-    const timer = window.setInterval(() => {
-      setNowMs(Date.now());
-    }, 1000);
+    const tick = () => {
+      if (!document.hidden) {
+        setNowMs(Date.now());
+      }
+    };
+    const timer = window.setInterval(tick, 1000);
     return () => window.clearInterval(timer);
   }, []);
 
@@ -73,12 +76,34 @@ export function CountdownSection() {
   ];
 
   return (
+    <div className="mt-5 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 sm:gap-3.5">
+      {units.map((unit, index) => (
+        <div
+          key={unit.label}
+          className={`rounded-xl border border-[#DCE4EC] bg-[#F8FAFC] px-4 py-3 sm:py-3.5 flex items-baseline justify-between ${
+            index === 0 ? 'col-span-2 sm:col-span-1' : ''
+          }`}
+        >
+          <span className="font-display text-3xl sm:text-4xl text-[#1A2B3C] tabular-nums tracking-tight">
+            {unit.value}
+          </span>
+          <span className="text-xs font-medium text-[#53667A]">
+            {unit.label}
+          </span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+export const CountdownSection = memo(function CountdownSection() {
+  return (
     <section
       aria-label="Ceremony Countdown"
       className="border-b border-[#DCE4EC] bg-white"
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-7">
-        <ScrollReveal direction="left" distance={32} blur={8}>
+        <ScrollReveal direction="left" distance={28} blur={4}>
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 md:gap-4">
             <div className="space-y-1">
               <p className="text-xs font-medium tracking-wide text-[#53667A]">
@@ -94,28 +119,10 @@ export function CountdownSection() {
           </div>
         </ScrollReveal>
 
-        <div className="mt-5 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 sm:gap-3.5">
-          {units.map((unit, index) => (
-            <ScrollReveal
-              key={unit.label}
-              direction={index % 2 === 0 ? 'left' : 'right'}
-              delay={0.05 * index}
-              distance={26}
-              blur={8}
-              className={index === 0 ? 'col-span-2 sm:col-span-1' : ''}
-            >
-              <div className="rounded-xl border border-[#DCE4EC] bg-[#F8FAFC] px-4 py-3 sm:py-3.5 flex items-baseline justify-between">
-                <span className="font-display text-3xl sm:text-4xl text-[#1A2B3C] tabular-nums tracking-tight">
-                  {unit.value}
-                </span>
-                <span className="text-xs font-medium text-[#53667A]">
-                  {unit.label}
-                </span>
-              </div>
-            </ScrollReveal>
-          ))}
-        </div>
+        <ScrollReveal direction="up" delay={0.05} distance={20}>
+          <LiveCountdownGrid />
+        </ScrollReveal>
       </div>
     </section>
   );
-}
+});

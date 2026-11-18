@@ -288,6 +288,7 @@ export function GallerySection() {
                 src={activePhoto.src}
                 alt={activePhoto.title}
                 fallbackTitle={activePhoto.title}
+                loading="eager"
                 className={`max-h-[64dvh] w-auto object-contain transition-[filter] duration-300 ease-out ${activeFilterPreset.cssClass}`}
               />
               {visiblePhotos.length > 1 && (

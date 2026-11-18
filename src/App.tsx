@@ -1,15 +1,10 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import { ArrowRight, Menu, QrCode, X } from 'lucide-react';
 import { CeremonySection } from './components/CeremonySection';
-import { CheckInSection } from './components/CheckInSection';
 import { CountdownSection } from './components/CountdownSection';
-import { GallerySection } from './components/GallerySection';
-import { GuestbookSection } from './components/GuestbookSection';
 import { InvitationEnvelopeOpening } from './components/InvitationEnvelopeOpening';
-import { RegistrySection } from './components/RegistrySection';
 import { ResilientImage } from './components/ResilientImage';
 import { ReturnToTopRings } from './components/ReturnToTopRings';
-import { RsvpAndPassSection } from './components/RsvpAndPassSection';
 import { ScrollReveal } from './components/ScrollReveal';
 import { TimetableSection } from './components/TimetableSection';
 import type {
@@ -19,6 +14,26 @@ import type {
   RsvpRecord,
   WeddingDatabase,
 } from './types';
+
+const GallerySection = lazy(() =>
+  import('./components/GallerySection').then((m) => ({ default: m.GallerySection }))
+);
+const RegistrySection = lazy(() =>
+  import('./components/RegistrySection').then((m) => ({ default: m.RegistrySection }))
+);
+const RsvpAndPassSection = lazy(() =>
+  import('./components/RsvpAndPassSection').then((m) => ({
+    default: m.RsvpAndPassSection,
+  }))
+);
+const GuestbookSection = lazy(() =>
+  import('./components/GuestbookSection').then((m) => ({
+    default: m.GuestbookSection,
+  }))
+);
+const CheckInSection = lazy(() =>
+  import('./components/CheckInSection').then((m) => ({ default: m.CheckInSection }))
+);
 
 export default function App() {
   const [envelopeOpened, setEnvelopeOpened] = useState<boolean>(false);
@@ -94,25 +109,34 @@ export default function App() {
       return;
     }
 
+    let rafId: number | null = null;
+
     const updateScrollPosition = () => {
+      rafId = null;
       const scrollY = window.scrollY || window.pageYOffset;
       const viewportBottom = scrollY + window.innerHeight;
       const docHeight = document.documentElement.scrollHeight;
       const nearEnd = scrollY > 360 && viewportBottom >= docHeight - 480;
 
       if (scrollY <= 120) {
-        setShowReturnRings(false);
+        setShowReturnRings((prev) => (prev ? false : prev));
       } else if (!isPullingToTop) {
-        setShowReturnRings(nearEnd);
+        setShowReturnRings((prev) => (prev === nearEnd ? prev : nearEnd));
       }
     };
 
+    const scheduleUpdate = () => {
+      if (rafId !== null) return;
+      rafId = requestAnimationFrame(updateScrollPosition);
+    };
+
     updateScrollPosition();
-    window.addEventListener('scroll', updateScrollPosition, { passive: true });
-    window.addEventListener('resize', updateScrollPosition, { passive: true });
+    window.addEventListener('scroll', scheduleUpdate, { passive: true });
+    window.addEventListener('resize', scheduleUpdate, { passive: true });
     return () => {
-      window.removeEventListener('scroll', updateScrollPosition);
-      window.removeEventListener('resize', updateScrollPosition);
+      if (rafId !== null) cancelAnimationFrame(rafId);
+      window.removeEventListener('scroll', scheduleUpdate);
+      window.removeEventListener('resize', scheduleUpdate);
     };
   }, [envelopeOpened, isPullingToTop]);
 
@@ -181,7 +205,7 @@ export default function App() {
       {!envelopeOpened && (
         <InvitationEnvelopeOpening onOpened={() => setEnvelopeOpened(true)} />
       )}
-      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-[#DCE4EC] no-print">
+      <header className="sticky top-0 z-40 bg-white/97 border-b border-[#DCE4EC] no-print">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4 sm:gap-8">
           <a
             href="#top"
@@ -281,8 +305,10 @@ export default function App() {
 
       <main
         id="top"
-        className={`flex-1 overflow-x-clip transition-[filter,transform] duration-200 ease-out ${
-          isPullingToTop ? 'blur-[6px] -translate-y-2' : 'blur-none translate-y-0'
+        className={`flex-1 overflow-x-clip ${
+          isPullingToTop
+            ? 'blur-[6px] -translate-y-2 transition-[filter,transform] duration-200 ease-out'
+            : ''
         }`}
       >
         <CountdownSection />
@@ -344,6 +370,8 @@ export default function App() {
                   src="/src/assets/images/hero_couple_retreat_1794819811766.jpg"
                   alt="Pinniel and Wema walking hand in hand across the Opal Retreat courtyard in Tucson, Arizona"
                   fallbackTitle="Pinniel & Wema · Opal Retreat"
+                  loading="eager"
+                  fetchPriority="high"
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -363,14 +391,28 @@ export default function App() {
 
         <TimetableSection />
 
-        <GallerySection />
+        <Suspense
+          fallback={
+            <section className="max-w-6xl mx-auto px-6 py-16 text-center text-sm text-[#53667A]">
+              Loading gallery...
+            </section>
+          }
+        >
+          <GallerySection />
+        </Suspense>
 
         {loading ? (
           <section className="max-w-6xl mx-auto px-6 py-20 text-center text-sm text-[#53667A]">
             Loading registry and guest passes...
           </section>
         ) : (
-          <>
+          <Suspense
+            fallback={
+              <section className="max-w-6xl mx-auto px-6 py-16 text-center text-sm text-[#53667A]">
+                Loading wedding sections...
+              </section>
+            }
+          >
             <RegistrySection
               items={registryItems}
               contributions={contributions}
@@ -402,7 +444,7 @@ export default function App() {
                 }
               }}
             />
-          </>
+          </Suspense>
         )}
         <div className="max-w-6xl mx-auto px-4 sm:px-6 pb-8 flex justify-end sticky bottom-5 z-40 pointer-events-none no-print">
           <div className="pointer-events-auto">
