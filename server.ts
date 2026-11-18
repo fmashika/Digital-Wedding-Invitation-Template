@@ -278,6 +278,78 @@ async function startServer() {
     res.json(db);
   });
 
+  app.get('/api/maps-config', (_req, res) => {
+    const apiKey =
+      process.env.VITE_GOOGLE_MAPS_API_KEY ||
+      process.env.GOOGLE_MAPS_API_KEY ||
+      '';
+    res.json({ apiKey });
+  });
+
+  app.get('/api/venue-location', async (_req, res) => {
+    const apiKey =
+      process.env.GOOGLE_MAPS_API_KEY ||
+      process.env.VITE_GOOGLE_MAPS_API_KEY ||
+      '';
+    if (!apiKey) {
+      res.status(503).json({ error: 'MAPS_KEY_UNAVAILABLE' });
+      return;
+    }
+
+    const address = '4800 N Sabino Canyon Rd, Tucson, AZ';
+    try {
+      const geocodeRes = await fetch(
+        `https://geocode.googleapis.com/v4/geocode/address/${encodeURIComponent(address)}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Goog-Api-Key': apiKey,
+            'X-Goog-FieldMask':
+              'results.placeId,results.location,results.formattedAddress',
+            'X-Goog-Maps-Solution-ID': 'gmp_mcp_codeassist_v1_aistudio',
+          },
+        }
+      );
+
+      if (geocodeRes.status === 429) {
+        res.status(429).json({ error: 'RESOURCE_EXHAUSTED' });
+        return;
+      }
+
+      const payload = (await geocodeRes.json()) as {
+        error?: { status?: string; message?: string };
+        results?: Array<{
+          placeId?: string;
+          formattedAddress?: string;
+          location?: { latitude?: number; longitude?: number };
+        }>;
+      };
+
+      if (payload.error?.status === 'RESOURCE_EXHAUSTED') {
+        res.status(429).json({ error: 'RESOURCE_EXHAUSTED' });
+        return;
+      }
+
+      const first = payload.results?.[0];
+      const lat = first?.location?.latitude;
+      const lng = first?.location?.longitude;
+      if (typeof lat !== 'number' || typeof lng !== 'number') {
+        res.status(404).json({ error: 'LOCATION_NOT_FOUND' });
+        return;
+      }
+
+      res.json({
+        lat,
+        lng,
+        placeId: first?.placeId ?? '',
+        formattedAddress: first?.formattedAddress ?? address,
+      });
+    } catch {
+      res.status(502).json({ error: 'GEOCODE_FAILED' });
+    }
+  });
+
   app.post('/api/rsvp', (req, res) => {
     const body = req.body as {
       guestName?: string;

@@ -1,6 +1,11 @@
+import { lazy, Suspense } from 'react';
 import { Calendar, Clock, MapPin, Shirt } from 'lucide-react';
 import { ScrollReveal } from './ScrollReveal';
 import { WeddingCardArtwork } from './WeddingCardArtwork';
+
+const VenueMap = lazy(() =>
+  import('./VenueMap').then((m) => ({ default: m.VenueMap }))
+);
 
 const TIMELINE_EVENTS = [
   {
@@ -180,6 +185,16 @@ export function CeremonySection() {
               ))}
             </div>
           </div>
+
+          <Suspense
+            fallback={
+              <div className="h-[340px] rounded-2xl border border-[#DCE4EC] bg-white flex items-center justify-center text-xs text-[#53667A]">
+                Loading venue map...
+              </div>
+            }
+          >
+            <VenueMap />
+          </Suspense>
         </ScrollReveal>
       </div>
     </section>

@@ -1,5 +1,6 @@
 import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import { ArrowRight, Menu, QrCode, X } from 'lucide-react';
+import { BackgroundAudioToggle } from './components/BackgroundAudioToggle';
 import { CeremonySection } from './components/CeremonySection';
 import { CountdownSection } from './components/CountdownSection';
 import { InvitationEnvelopeOpening } from './components/InvitationEnvelopeOpening';
@@ -49,6 +50,15 @@ export default function App() {
   const [scannerPrefillCode, setScannerPrefillCode] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(true);
   const [loadError, setLoadError] = useState<string>('');
+  const [mapsQuotaExceeded, setMapsQuotaExceeded] = useState<boolean>(false);
+
+  useEffect(() => {
+    const handleQuotaExceeded = () => setMapsQuotaExceeded(true);
+    window.addEventListener('gmp-quota-exceeded', handleQuotaExceeded);
+    return () => {
+      window.removeEventListener('gmp-quota-exceeded', handleQuotaExceeded);
+    };
+  }, []);
 
   useEffect(() => {
     let active = true;
@@ -205,6 +215,22 @@ export default function App() {
       {!envelopeOpened && (
         <InvitationEnvelopeOpening onOpened={() => setEnvelopeOpened(true)} />
       )}
+      {mapsQuotaExceeded && (
+        <div className="bg-amber-50 border-b border-amber-200 text-amber-900 px-4 py-2.5 text-xs md:text-sm text-center sticky top-0 z-50 shadow-sm no-print">
+          <span>
+            Google Maps Platform quota reached. If you are the app owner, visit{' '}
+            <a
+              href="https://developers.google.com/maps/ai/ai-studio?utm_campaign=gmp_mcp_codeassist_v1_aistudio#quota_exceeded_errors"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline font-semibold text-amber-950 hover:text-amber-800"
+            >
+              maps developer site
+            </a>{' '}
+            for instructions to update your account.
+          </span>
+        </div>
+      )}
       <header className="sticky top-0 z-40 bg-white/97 border-b border-[#DCE4EC] no-print">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4 sm:gap-8">
           <a
@@ -257,6 +283,7 @@ export default function App() {
           </nav>
 
           <div className="flex items-center gap-2 shrink-0">
+            <BackgroundAudioToggle />
             <a
               href="#rsvp"
               className="inline-flex items-center px-3.5 sm:px-4 py-2 min-h-[40px] rounded-lg bg-[#23374B] text-white text-xs font-medium hover:bg-[#1A2B3C] transition-colors whitespace-nowrap shrink-0"
